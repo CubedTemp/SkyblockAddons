@@ -44,4 +44,4 @@ jobs:
       with:
 #        name: SkyblockAddons-${{ steps.read_properties.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_properties.outputs.minecraftVersion }}
 #        path: build/libs/SkyblockAddons-${{ steps.read_second_property.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_fifth_property.outputs.minecraftVersion }}
-        path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
+        path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
