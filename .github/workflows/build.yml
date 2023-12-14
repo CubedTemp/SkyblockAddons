@@ -24,13 +24,15 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build --no-daemon
     - name: Read Project Version
-      id: read_properties
+#      id: read_second_property
+      id: read_property_sba_version
       uses: christian-draeger/read-properties@1.1.1
       with:
         path: gradle.properties
         properties: version
     - name: Read MC Version
-      id: read_properties
+#      id: read_fifth_property
+      id: read_property_mc_version
       uses: christian-draeger/read-properties@1.1.1
       with:
         path: gradle.properties
@@ -41,4 +43,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
 #        name: SkyblockAddons-${{ steps.read_properties.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_properties.outputs.minecraftVersion }}
-        path: build/libs/SkyblockAddons-${{ steps.read_properties.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_properties.outputs.minecraftVersion }}
+#        path: build/libs/SkyblockAddons-${{ steps.read_second_property.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_fifth_property.outputs.minecraftVersion }}
+        path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
