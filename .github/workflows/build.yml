@@ -40,7 +40,7 @@ jobs:
     - name: Extract Jar
       uses: ihiroky/extract-action@v1
       with:
-        file_path: build/libs/build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+        file_path: build/libs/build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
         extract_dir: path_to_extract_directory
         verbose: true
     - name: Upload Artifact
