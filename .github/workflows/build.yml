@@ -35,13 +35,12 @@ jobs:
       with:
         path: gradle.properties
         properties: minecraftVersion
-    - name: 'DEBUG: list files in build/libs'
-      run: |
-        ls -l build/libs
-        ls -l
-    - name: Unzip Jar
-      working-directory: build/libs
-      run: 7z x build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+    - name: Extract Action
+      uses: ihiroky/extract-action@v1
+      with:
+        file_path: build/libs/build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+        extract_dir: path_to_extract_directory
+        verbose: true
     - name: Upload Artifact
       env:
         project_version: ${{ steps.read_properties.outputs.version }}
