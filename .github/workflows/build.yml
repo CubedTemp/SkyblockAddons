@@ -40,9 +40,8 @@ jobs:
         ls -l build/libs
         ls -l
     - name: Unzip Jar
-      run: |
-        cd build/libs
-        7z x build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+      working-directory: build/libs
+      run: 7z x build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
     - name: Upload Artifact
       env:
         project_version: ${{ steps.read_properties.outputs.version }}
