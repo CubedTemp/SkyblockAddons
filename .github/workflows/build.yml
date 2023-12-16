@@ -35,10 +35,22 @@ jobs:
       with:
         path: gradle.properties
         properties: minecraftVersion
+    - name: Unzip Jar
+      run: 7z x build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
     - name: Upload Artifact
       env:
         project_version: ${{ steps.read_properties.outputs.version }}
       uses: actions/upload-artifact@v3
       with:
-        name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
-        path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+        name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
+        path: |
+          build/libs/*
+          !build/libs/*.jar
+
+#    - name: Upload Artifact
+#      env:
+#        project_version: ${{ steps.read_properties.outputs.version }}
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+#        path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
