@@ -1,0 +1,49 @@
+##############################################################
+# INCASE GITHUB ALLOWS NON-ZIP WORKFLOW DOWNLOADS IN FUTURE
+##############################################################
+
+name: build
+
+# on: [ push, pull_request, workflow_dispatch ]
+on: workflow_dispatch
+
+jobs:
+  build:
+    if: ${{ !contains(github.head_ref, 'translations/') }}
+    runs-on: ubuntu-latest
+    env:
+      ORG_GRADLE_PROJECT_buildNumber: ${{ github.run_number }}
+      ORG_GRADLE_PROJECT_runAttempt: ${{ github.run_attempt }}
+      ORG_GRADLE_PROJECT_runningOnCi: ${{ true }}
+    timeout-minutes: 15
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+        cache: 'gradle'
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build --no-daemon
+    - name: Read Project Version
+      id: read_property_sba_version
+      uses: christian-draeger/read-properties@1.1.1
+      with:
+        path: gradle.properties
+        properties: version
+    - name: Read MC Version
+      id: read_property_mc_version
+      uses: christian-draeger/read-properties@1.1.1
+      with:
+        path: gradle.properties
+        properties: minecraftVersion
+    - name: Upload Artifact
+      env:
+        project_version: ${{ steps.read_properties.outputs.version }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
+        path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
