@@ -13,40 +13,48 @@ jobs:
     timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-        cache: 'gradle'
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build --no-daemon
-    - name: Read Project Version
-      id: read_property_sba_version
-      uses: christian-draeger/read-properties@1.1.1
-      with:
-        path: gradle.properties
-        properties: version
-    - name: Read MC Version
-      id: read_property_mc_version
-      uses: christian-draeger/read-properties@1.1.1
-      with:
-        path: gradle.properties
-        properties: minecraftVersion
-    - name: Extract Jar Prep
-      run: mv build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
-    - name: Extract Jar
-      uses: ihiroky/extract-action@v1
-      with:
-        file_path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
-        extract_dir: build/libs/extract
-        verbose: true
-    - name: Upload Artifact
-      env:
-        project_version: ${{ steps.read_properties.outputs.version }}
-      uses: actions/upload-artifact@v3
-      with:
-        name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
-        path: build/libs/extract/*
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+
+      - name: Read Project Version
+        id: read_property_sba_version
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: gradle.properties
+          properties: version
+
+      - name: Read MC Version
+        id: read_property_mc_version
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: gradle.properties
+          properties: minecraftVersion
+
+      - name: Extract Jar Prep
+        run: mv build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
+
+      - name: Extract Jar
+        uses: ihiroky/extract-action@v1
+        with:
+          file_path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
+          extract_dir: build/libs/extract
+          verbose: true
+
+      - name: Upload Artifact
+        env:
+          project_version: ${{ steps.read_properties.outputs.version }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
+          path: build/libs/extract/*
