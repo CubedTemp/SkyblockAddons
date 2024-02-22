@@ -68,5 +68,5 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: false
-          title: "SkyblockAddons ${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }} for Forge ${{ steps.read_property_mc_version.outputs.minecraftVersion }}
+          title: "SkyblockAddons ${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }} for Forge ${{ steps.read_property_mc_version.outputs.minecraftVersion }}"
           files: build/libs/rename/SkyblockAddons.jar
