@@ -42,7 +42,7 @@ jobs:
           properties: minecraftVersion
 
       - name: Extract Jar Prep
-        run: mv build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
+        run: cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
 
       - name: Extract Jar
         uses: ihiroky/extract-action@v1
@@ -58,3 +58,15 @@ jobs:
         with:
           name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
           path: build/libs/extract/*
+
+      - name: Change release filename
+        run: cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/rename/SkyblockAddons.jar
+      
+      - name: Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          title: "SkyblockAddons ${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }} for Forge ${{ steps.read_property_mc_version.outputs.minecraftVersion }}
+          files: build/libs/rename/SkyblockAddons.jar
