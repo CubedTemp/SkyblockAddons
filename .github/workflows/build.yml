@@ -55,7 +55,7 @@ jobs:
             !build/libs/extract/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar
 
       - name: Preprare Release
-        run: cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/rename/SkyblockAddons.jar
+        run: mkdir build/libs/rename | cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/rename/SkyblockAddons.jar
       
       - name: Release
         uses: marvinpinto/action-automatic-releases@latest
