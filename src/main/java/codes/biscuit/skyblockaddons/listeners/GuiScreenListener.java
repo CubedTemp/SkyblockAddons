@@ -63,7 +63,6 @@ public class GuiScreenListener {
         GuiScreen guiScreen = e.gui;
 
         if (guiScreen instanceof GuiChest) {
-            Minecraft mc = Minecraft.getMinecraft();
             GuiChest guiChest = (GuiChest) guiScreen;
             InventoryType inventoryType = SkyblockAddons.getInstance().getInventoryUtils().updateInventoryType(guiChest);
             InventoryBasic chestInventory = (InventoryBasic) guiChest.lowerChestInventory;
@@ -75,9 +74,9 @@ public class GuiScreenListener {
                     lastBackpackOpenMs = System.currentTimeMillis();
 
                     if (ThreadLocalRandom.current().nextInt(0, 2) == 0) {
-                        mc.thePlayer.playSound("mob.horse.armor", 0.5F, 1);
+                        Minecraft.getMinecraft().thePlayer.playSound("mob.horse.armor", 0.5F, 1);
                     } else {
-                        mc.thePlayer.playSound("mob.horse.leather", 0.5F, 1);
+                        Minecraft.getMinecraft().thePlayer.playSound("mob.horse.leather", 0.5F, 1);
                     }
                 }
             }
@@ -151,8 +150,10 @@ public class GuiScreenListener {
 
     @SubscribeEvent
     public void onInventoryLoadingDone(InventoryLoadingDoneEvent e) {
-        removeInventoryChangeListener(listenedInventory);
-        lastInventoryChangeMs = -1;
+        if (listenedInventory != null) {
+            removeInventoryChangeListener(listenedInventory);
+            lastInventoryChangeMs = -1;
+        }
     }
 
     @SubscribeEvent
