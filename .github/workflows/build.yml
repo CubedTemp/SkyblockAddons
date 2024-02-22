@@ -41,15 +41,8 @@ jobs:
           path: gradle.properties
           properties: minecraftVersion
 
-      - name: Extract Jar Prep
-        run: cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
-
       - name: Extract Jar
-        uses: ihiroky/extract-action@v1
-        with:
-          file_path: build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip
-          extract_dir: build/libs/extract
-          verbose: true
+        run: mkdir build/libs/extract/unzip | cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/extract/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.zip | cd build/libs/extract/unzip | jar xf "SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar" | mv -v "build/libs/extract/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}" build/libs/extract/unzip
 
       - name: Upload Artifact
         env:
@@ -59,7 +52,7 @@ jobs:
           name: SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}
           path: build/libs/extract/*
 
-      - name: Change release filename
+      - name: Preprare Release
         run: cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/rename/SkyblockAddons.jar
       
       - name: Release
