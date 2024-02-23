@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - develop
   workflow_dispatch:
 
 jobs:
@@ -60,12 +60,3 @@ jobs:
 
       - name: Preprare Release
         run: mkdir build/libs/rename | cp build/libs/SkyblockAddons-${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }}-for-MC-${{ steps.read_property_mc_version.outputs.minecraftVersion }}.jar build/libs/rename/SkyblockAddons.jar
-      
-      - name: Release
-        uses: marvinpinto/action-automatic-releases@latest
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: false
-          title: "SkyblockAddons ${{ steps.read_property_sba_version.outputs.version }}+${{ github.run_number }} for Forge ${{ steps.read_property_mc_version.outputs.minecraftVersion }}"
-          files: build/libs/rename/SkyblockAddons.jar
